@@ -1,0 +1,160 @@
+{
+  "info": {
+    "_postman_id": "product-crud-collection",
+    "name": "Product CRUD API",
+    "description": "Postman collection for testing Product CRUD operations. \n\nAssumptions:\n- Base URL: http://localhost:3000 (update the 'baseUrl' variable as needed)\n- For POST and PUT: Use form-data body with fields: name (text), price (text), description (text), image (file)\n- Authentication: If required, add Authorization header (e.g., Bearer token) to each request\n- Variables: Set 'baseUrl' and 'productId' in the collection/environment variables",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Add Product (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "name",
+              "value": "Test Product",
+              "type": "text"
+            },
+            {
+              "key": "price",
+              "value": "99.99",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "A test product description",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products"]
+        }
+      }
+    },
+    {
+      "name": "Get All Products (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products"]
+        }
+      }
+    },
+    {
+      "name": "Get Product by ID (GET)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Set a sample productId variable if not already set\npm.test(\"productId is set\", pm.variables.get(\"productId\") !== undefined);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productId}}"]
+        }
+      }
+    },
+    {
+      "name": "Update Product (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "name",
+              "value": "Updated Product Name",
+              "type": "text"
+            },
+            {
+              "key": "price",
+              "value": "149.99",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "Updated description",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "src": [],
+              "enabled": false
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productId}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Optional: Extract productId from previous response if running in sequence\n// pm.environment.set(\"productId\", pm.response.json().product._id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Product (DELETE)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productId}}"]
+        }
+      }
+    }
+  ]
+}
